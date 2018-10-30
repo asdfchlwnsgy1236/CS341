@@ -1,0 +1,77 @@
+make[1]: Entering directory '/home/ubuntu/cs341/KENSv3/src'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/ubuntu/cs341/KENSv3/src'
+make[1]: Entering directory '/home/ubuntu/cs341/KENSv3/app/TestTCP'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/ubuntu/cs341/KENSv3/app/TestTCP'
+Running test cases for project1...
+Running main() from gtest_main.cc
+Note: Google Test filter = TestEnv_Reliable.TestOpen:TestEnv_Reliable.TestBind_*
+[==========] Running 8 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 8 tests from TestEnv_Reliable
+[ RUN      ] TestEnv_Reliable.TestOpen
+[       OK ] TestEnv_Reliable.TestOpen (7028 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_Simple
+[       OK ] TestEnv_Reliable.TestBind_Simple (0 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_DoubleBind
+[       OK ] TestEnv_Reliable.TestBind_DoubleBind (0 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_GetSockName
+[       OK ] TestEnv_Reliable.TestBind_GetSockName (0 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_OverlapPort
+[       OK ] TestEnv_Reliable.TestBind_OverlapPort (1 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_OverlapClosed
+[       OK ] TestEnv_Reliable.TestBind_OverlapClosed (0 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_DifferentIP_SamePort
+[       OK ] TestEnv_Reliable.TestBind_DifferentIP_SamePort (0 ms)
+[ RUN      ] TestEnv_Reliable.TestBind_SameIP_DifferentPort
+[       OK ] TestEnv_Reliable.TestBind_SameIP_DifferentPort (1 ms)
+[----------] 8 tests from TestEnv_Reliable (7031 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test case ran. (7031 ms total)
+[  PASSED  ] 8 tests.
+Running test cases for project2...
+Running main() from gtest_main.cc
+Note: Google Test filter = TestEnv_Reliable.TestAccept_*:TestEnv_Any.TestAccept_*:TestEnv_Any.TestConnect_*:TestEnv_Any.TestClose_*
+[==========] Running 15 tests from 2 test cases.
+[----------] Global test environment set-up.
+[----------] 2 tests from TestEnv_Reliable
+[ RUN      ] TestEnv_Reliable.TestAccept_Backlog1
+[       OK ] TestEnv_Reliable.TestAccept_Backlog1 (62 ms)
+[ RUN      ] TestEnv_Reliable.TestAccept_Backlog2
+[       OK ] TestEnv_Reliable.TestAccept_Backlog2 (4 ms)
+[----------] 2 tests from TestEnv_Reliable (66 ms total)
+
+[----------] 13 tests from TestEnv_Any
+[ RUN      ] TestEnv_Any.TestAccept_BeforeAccept
+[       OK ] TestEnv_Any.TestAccept_BeforeAccept (1 ms)
+[ RUN      ] TestEnv_Any.TestAccept_AfterAccept
+[       OK ] TestEnv_Any.TestAccept_AfterAccept (1 ms)
+[ RUN      ] TestEnv_Any.TestAccept_MultipleInterface1
+[       OK ] TestEnv_Any.TestAccept_MultipleInterface1 (5 ms)
+[ RUN      ] TestEnv_Any.TestAccept_MultipleInterface2
+[       OK ] TestEnv_Any.TestAccept_MultipleInterface2 (8 ms)
+[ RUN      ] TestEnv_Any.TestConnect_BeforeAccept
+[       OK ] TestEnv_Any.TestConnect_BeforeAccept (1 ms)
+[ RUN      ] TestEnv_Any.TestConnect_AfterAccept
+[       OK ] TestEnv_Any.TestConnect_AfterAccept (2 ms)
+[ RUN      ] TestEnv_Any.TestConnect_SimultaneousConnect
+[       OK ] TestEnv_Any.TestConnect_SimultaneousConnect (2 ms)
+[ RUN      ] TestEnv_Any.TestClose_Connect_CloseFirst
+[       OK ] TestEnv_Any.TestClose_Connect_CloseFirst (2 ms)
+[ RUN      ] TestEnv_Any.TestClose_Connect_CloseLater
+[       OK ] TestEnv_Any.TestClose_Connect_CloseLater (2 ms)
+[ RUN      ] TestEnv_Any.TestClose_Connect_CloseSimultaneous
+[       OK ] TestEnv_Any.TestClose_Connect_CloseSimultaneous (1 ms)
+[ RUN      ] TestEnv_Any.TestClose_Accept_CloseLater
+[       OK ] TestEnv_Any.TestClose_Accept_CloseLater (2 ms)
+[ RUN      ] TestEnv_Any.TestClose_Accept_CloseFirst
+[       OK ] TestEnv_Any.TestClose_Accept_CloseFirst (2 ms)
+[ RUN      ] TestEnv_Any.TestClose_Accept_CloseSimultaneous
+[       OK ] TestEnv_Any.TestClose_Accept_CloseSimultaneous (1 ms)
+[----------] 13 tests from TestEnv_Any (31 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 2 test cases ran. (97 ms total)
+[  PASSED  ] 15 tests.
