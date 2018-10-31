@@ -11,9 +11,9 @@ Note: Google Test filter = TestEnv_Reliable.TestOpen:TestEnv_Reliable.TestBind_*
 [----------] Global test environment set-up.
 [----------] 8 tests from TestEnv_Reliable
 [ RUN      ] TestEnv_Reliable.TestOpen
-[       OK ] TestEnv_Reliable.TestOpen (7028 ms)
+[       OK ] TestEnv_Reliable.TestOpen (6611 ms)
 [ RUN      ] TestEnv_Reliable.TestBind_Simple
-[       OK ] TestEnv_Reliable.TestBind_Simple (0 ms)
+[       OK ] TestEnv_Reliable.TestBind_Simple (1 ms)
 [ RUN      ] TestEnv_Reliable.TestBind_DoubleBind
 [       OK ] TestEnv_Reliable.TestBind_DoubleBind (0 ms)
 [ RUN      ] TestEnv_Reliable.TestBind_GetSockName
@@ -26,10 +26,10 @@ Note: Google Test filter = TestEnv_Reliable.TestOpen:TestEnv_Reliable.TestBind_*
 [       OK ] TestEnv_Reliable.TestBind_DifferentIP_SamePort (0 ms)
 [ RUN      ] TestEnv_Reliable.TestBind_SameIP_DifferentPort
 [       OK ] TestEnv_Reliable.TestBind_SameIP_DifferentPort (1 ms)
-[----------] 8 tests from TestEnv_Reliable (7031 ms total)
+[----------] 8 tests from TestEnv_Reliable (6614 ms total)
 
 [----------] Global test environment tear-down
-[==========] 8 tests from 1 test case ran. (7031 ms total)
+[==========] 8 tests from 1 test case ran. (6614 ms total)
 [  PASSED  ] 8 tests.
 Running test cases for project2...
 Running main() from gtest_main.cc
@@ -38,10 +38,10 @@ Note: Google Test filter = TestEnv_Reliable.TestAccept_*:TestEnv_Any.TestAccept_
 [----------] Global test environment set-up.
 [----------] 2 tests from TestEnv_Reliable
 [ RUN      ] TestEnv_Reliable.TestAccept_Backlog1
-[       OK ] TestEnv_Reliable.TestAccept_Backlog1 (62 ms)
+[       OK ] TestEnv_Reliable.TestAccept_Backlog1 (91 ms)
 [ RUN      ] TestEnv_Reliable.TestAccept_Backlog2
-[       OK ] TestEnv_Reliable.TestAccept_Backlog2 (4 ms)
-[----------] 2 tests from TestEnv_Reliable (66 ms total)
+[       OK ] TestEnv_Reliable.TestAccept_Backlog2 (5 ms)
+[----------] 2 tests from TestEnv_Reliable (96 ms total)
 
 [----------] 13 tests from TestEnv_Any
 [ RUN      ] TestEnv_Any.TestAccept_BeforeAccept
@@ -49,29 +49,29 @@ Note: Google Test filter = TestEnv_Reliable.TestAccept_*:TestEnv_Any.TestAccept_
 [ RUN      ] TestEnv_Any.TestAccept_AfterAccept
 [       OK ] TestEnv_Any.TestAccept_AfterAccept (1 ms)
 [ RUN      ] TestEnv_Any.TestAccept_MultipleInterface1
-[       OK ] TestEnv_Any.TestAccept_MultipleInterface1 (5 ms)
+[       OK ] TestEnv_Any.TestAccept_MultipleInterface1 (6 ms)
 [ RUN      ] TestEnv_Any.TestAccept_MultipleInterface2
-[       OK ] TestEnv_Any.TestAccept_MultipleInterface2 (8 ms)
+[       OK ] TestEnv_Any.TestAccept_MultipleInterface2 (5 ms)
 [ RUN      ] TestEnv_Any.TestConnect_BeforeAccept
 [       OK ] TestEnv_Any.TestConnect_BeforeAccept (1 ms)
 [ RUN      ] TestEnv_Any.TestConnect_AfterAccept
-[       OK ] TestEnv_Any.TestConnect_AfterAccept (2 ms)
+[       OK ] TestEnv_Any.TestConnect_AfterAccept (1 ms)
 [ RUN      ] TestEnv_Any.TestConnect_SimultaneousConnect
-[       OK ] TestEnv_Any.TestConnect_SimultaneousConnect (2 ms)
+[       OK ] TestEnv_Any.TestConnect_SimultaneousConnect (1 ms)
 [ RUN      ] TestEnv_Any.TestClose_Connect_CloseFirst
-[       OK ] TestEnv_Any.TestClose_Connect_CloseFirst (2 ms)
+[       OK ] TestEnv_Any.TestClose_Connect_CloseFirst (1 ms)
 [ RUN      ] TestEnv_Any.TestClose_Connect_CloseLater
-[       OK ] TestEnv_Any.TestClose_Connect_CloseLater (2 ms)
+[       OK ] TestEnv_Any.TestClose_Connect_CloseLater (1 ms)
 [ RUN      ] TestEnv_Any.TestClose_Connect_CloseSimultaneous
-[       OK ] TestEnv_Any.TestClose_Connect_CloseSimultaneous (1 ms)
+[       OK ] TestEnv_Any.TestClose_Connect_CloseSimultaneous (2 ms)
 [ RUN      ] TestEnv_Any.TestClose_Accept_CloseLater
-[       OK ] TestEnv_Any.TestClose_Accept_CloseLater (2 ms)
+[       OK ] TestEnv_Any.TestClose_Accept_CloseLater (1 ms)
 [ RUN      ] TestEnv_Any.TestClose_Accept_CloseFirst
-[       OK ] TestEnv_Any.TestClose_Accept_CloseFirst (2 ms)
+[       OK ] TestEnv_Any.TestClose_Accept_CloseFirst (1 ms)
 [ RUN      ] TestEnv_Any.TestClose_Accept_CloseSimultaneous
 [       OK ] TestEnv_Any.TestClose_Accept_CloseSimultaneous (1 ms)
-[----------] 13 tests from TestEnv_Any (31 ms total)
+[----------] 13 tests from TestEnv_Any (23 ms total)
 
 [----------] Global test environment tear-down
-[==========] 15 tests from 2 test cases ran. (97 ms total)
+[==========] 15 tests from 2 test cases ran. (120 ms total)
 [  PASSED  ] 15 tests.

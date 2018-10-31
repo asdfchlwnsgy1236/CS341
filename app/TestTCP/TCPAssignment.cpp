@@ -5,7 +5,7 @@
  *      Author: Keunhong Lee
  *
  * Project 2 completed: 20181001
- * Project 3 modified: 20181030
+ * Project 3 completed: 20181031
  * asdfchlwnsgy1236
  */
 
@@ -72,12 +72,24 @@ record::record(record const &r):
 	otheraddr.sin_family = r.otheraddr.sin_family;
 	otheraddr.sin_port = r.otheraddr.sin_port;
 	otheraddr.sin_addr.s_addr = r.otheraddr.sin_addr.s_addr;
+	for(auto a: pending){
+		delete a;
+	}
+	pending.clear();
 	for(auto a: r.pending){
 		pending.push_back(new record(*a));
 	}
+	for(auto a: established){
+		delete a;
+	}
+	established.clear();
 	for(auto a: r.established){
 		established.push_back(new record(*a));
 	}
+	for(auto a: accepted){
+		delete a;
+	}
+	accepted.clear();
 	for(auto a: r.accepted){
 		accepted.push_back(new record(*a));
 	}
@@ -206,7 +218,7 @@ void TCPAssignment::finalize()
 {
 }
 
-std::vector<record *>::iterator TCPAssignment::findInRecords(int pid, int sock){
+recvecit TCPAssignment::findInRecords(int pid, int sock){
 	// go through the list of bound sockets and accepted connections to find the given socket
 	for(auto a = bindrecs.begin(); a != bindrecs.end(); a++){
 		if((*a)->pid == pid && (*a)->sock == sock){
@@ -226,9 +238,8 @@ std::vector<record *>::iterator TCPAssignment::findInRecords(int pid, int sock){
 	return bindrecs.end();
 }
 
-bool TCPAssignment::recordMatchesAddrs(std::vector<record *>::iterator index, unsigned int anyaddr,
-		unsigned int srcaddr, unsigned short srcport,
-		unsigned int dstaddr, unsigned short dstport){
+bool TCPAssignment::recordMatchesAddrs(recvecit index, unsigned int anyaddr,
+		unsigned int srcaddr, unsigned short srcport, unsigned int dstaddr, unsigned short dstport){
 	// check using the rules for overlapping sockets
 	return (*index)->addr.sin_port == srcport &&
 				(*index)->otheraddr.sin_port == dstport &&
@@ -240,7 +251,7 @@ bool TCPAssignment::recordMatchesAddrs(std::vector<record *>::iterator index, un
 				dstaddr == anyaddr);
 }
 
-std::vector<record *>::iterator TCPAssignment::findInRecords(unsigned int srcaddr, unsigned short srcport,
+recvecit TCPAssignment::findInRecords(unsigned int srcaddr, unsigned short srcport,
 		unsigned int dstaddr, unsigned short dstport){
 	unsigned int anyaddr = htonl(INADDR_ANY);
 
@@ -279,7 +290,7 @@ std::vector<record *>::iterator TCPAssignment::findInRecords(unsigned int srcadd
 	return bindrecs.end();
 }
 
-std::vector<record *>::iterator TCPAssignment::findInRecords(unsigned int srcaddr, unsigned short srcport){
+recvecit TCPAssignment::findInRecords(unsigned int srcaddr, unsigned short srcport){
 	unsigned int anyaddr = htonl(INADDR_ANY);
 
 	// go through the list of bound sockets
@@ -332,7 +343,7 @@ Packet *TCPAssignment::makePacket(size_t datasize, record const *rec, unsigned i
 	packet->writeData(46, &dataoffset, 1);
 	packet->writeData(47, &flags, 1);
 	packet->writeData(48, &windowsize, 2);
-	if(datasize > 0 && data != nullptr){
+	if(data != nullptr && datasize > 0){
 		packet->writeData(headersize, data, datasize);
 	}
 
@@ -344,8 +355,7 @@ Packet *TCPAssignment::makePacket(size_t datasize, record const *rec, unsigned i
 	return packet;
 }
 
-void TCPAssignment::eraseFromRecords(std::vector<record *>::iterator index,
-		std::vector<record *>::iterator parentindex){
+void TCPAssignment::eraseFromRecords(recvecit index, recvecit parentindex){
 	// deallocate the socket record and then remove it from the appropriate list
 	sockinvec forswitch = (*index)->invector;
 	delete *index;
@@ -372,6 +382,7 @@ void TCPAssignment::eraseFromRecords(std::vector<record *>::iterator index,
 }
 
 void TCPAssignment::printRecord(record const *rec){
+	std::cout << "[[DEBUG] RECORD DEBUG PRINT BEGIN [DEBUG]]" << std::endl;
 	std::cout << "[DEBUG] uuid: " << rec->uuid << std::endl;
 	std::cout << "[DEBUG] pid: " << rec->pid << std::endl;
 	std::cout << "[DEBUG] sock: " << rec->sock << std::endl;
@@ -385,17 +396,23 @@ void TCPAssignment::printRecord(record const *rec){
 	std::cout << "[DEBUG] otheraddr.sin_family: " << rec->otheraddr.sin_family << std::endl;
 	std::cout << "[DEBUG] otheraddr.sin_port: " << rec->otheraddr.sin_port << std::endl;
 	std::cout << "[DEBUG] otheraddr.sin_addr.s_addr: " << rec->otheraddr.sin_addr.s_addr << std::endl;
+	std::cout << "[DEBUG] acceptaddr: " << rec->acceptaddr << std::endl;
+	std::cout << "[DEBUG] acceptaddrsize: " << rec->acceptaddrsize << std::endl;
 	std::cout << "[DEBUG] pending: " << *((unsigned long *)&rec->pending) <<
 			" " << *((unsigned long *)&rec->pending + 1) <<
-			" " << *((unsigned long *)&rec->pending + 2) << std::endl;
+			" " << *((unsigned long *)&rec->pending + 2) <<
+			" size = " << rec->pending.size() << std::endl;
 	std::cout << "[DEBUG] established: " << *((unsigned long *)&rec->established) <<
 			" " << *((unsigned long *)&rec->established + 1) <<
-			" " << *((unsigned long *)&rec->established + 2) << std::endl;
+			" " << *((unsigned long *)&rec->established + 2) <<
+			" size = " << rec->established.size() << std::endl;
 	std::cout << "[DEBUG] accepted: " << *((unsigned long *)&rec->accepted) <<
 			" " << *((unsigned long *)&rec->accepted + 1) <<
-			" " << *((unsigned long *)&rec->accepted + 2) << std::endl;
+			" " << *((unsigned long *)&rec->accepted + 2) <<
+			" size = " << rec->accepted.size() << std::endl;
 	std::cout << "[DEBUG] invector: " << (int)rec->invector << std::endl;
 	std::cout << "[DEBUG] sleeping: " << rec->sleeping << std::endl;
+	std::cout << "[[DEBUG] RECORD DEBUG PRINT END [DEBUG]]" << std::endl;
 }
 
 void TCPAssignment::syscall_socket(UUID uuid, int pid, int param1, int param2){
@@ -710,13 +727,9 @@ void TCPAssignment::packetArrived(std::string fromModule, Packet* packet)
 	sockstate state = sockstate::CLOSED;
 	if(index != bindrecs.end()){
 		state = (*index)->state;
-// XXX
-//printRecord(*index);
 	}
 	else if(parentindex != bindrecs.end()){
 		state = (*parentindex)->state;
-// XXX
-//printRecord(*parentindex);
 	}
 
 	// react depending on the state of the receiving socket and the received flags and data of the packet
@@ -848,7 +861,7 @@ void TCPAssignment::packetArrived(std::string fromModule, Packet* packet)
 						TCP_DATA_OFFSET_MIN, TCP_ACK, htons(TCP_WINDOW_SIZE), nullptr));
 
 				// in the TIME_WAIT state, wait for the timeout of 2 MSL, then truly close the socket
-				auto payload = new std::pair<std::vector<record *>::iterator, std::vector<record *>::iterator>(index, parentindex);
+				auto payload = new std::pair<recvecit, recvecit>(index, parentindex);
 				this->addTimer(payload, TCP_MSL * 2);
 			}
 
@@ -873,7 +886,7 @@ void TCPAssignment::packetArrived(std::string fromModule, Packet* packet)
 				(*index)->state = sockstate::TIME_WAIT;
 
 				// in the TIME_WAIT state, wait for the timeout of 2 MSL, then truly close the socket
-				auto payload = new std::pair<std::vector<record *>::iterator, std::vector<record *>::iterator>(index, parentindex);
+				auto payload = new std::pair<recvecit, recvecit>(index, parentindex);
 				this->addTimer(payload, TCP_MSL * 2);
 			}
 
@@ -893,7 +906,7 @@ void TCPAssignment::packetArrived(std::string fromModule, Packet* packet)
 void TCPAssignment::timerCallback(void* payload)
 {
 	// TIME_WAIT state has timed out, so close the socket, remove the socket record, and wake up the close() call
-	auto indexes = (std::pair<std::vector<record *>::iterator, std::vector<record *>::iterator> *)payload;
+	auto indexes = (std::pair<recvecit, recvecit> *)payload;
 	this->removeFileDescriptor((*indexes->first)->pid, (*indexes->first)->sock);
 	UUID uuid = (*indexes->first)->uuid;
 	eraseFromRecords(indexes->first, indexes->second);

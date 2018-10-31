@@ -5,7 +5,7 @@
  *      Author: Keunhong Lee
  *
  * Project 2 completed: 20181001
- * Project 3 modified: 20181030
+ * Project 3 completed: 20181031
  * asdfchlwnsgy1236
  */
 
@@ -20,11 +20,17 @@
 #include <netinet/in.h>
 #include <E/E_TimerModule.hpp>
 
-#include <string>
 #include <utility>
 
 namespace E
 {
+// forward declaration of record for the typedefs below
+struct record;
+
+// typedefs for convenience
+typedef std::vector<record *> recvec;
+typedef recvec::iterator recvecit;
+
 // enumerator for socket states
 enum class sockstate{
 	CLOSED = 0,
@@ -69,7 +75,7 @@ struct record{
 	// the address structure size variable that the accept function must modify before returning
 	socklen_t *acceptaddrsize;
 	// the pending, established, and accepted connections lists for the server only
-	std::vector<record *> pending, established, accepted;
+	recvec pending, established, accepted;
 	// indicator for whether the socket is in bindrecs, pending, established, or accepted for use in closing
 	sockinvec invector;
 	// indicator for whether the socket is sleeping (e.g. blocked by connect / accept calls)
@@ -100,31 +106,31 @@ private:
 	virtual void timerCallback(void* payload) final;
 
 	// the list of bound sockets
-	std::vector<record *> bindrecs;
+	recvec bindrecs;
 	// the "random" sequence number to use
 	unsigned int randomseq;
 	// the "random" port number to use
 	unsigned short randomport;
 
 	// helper function that finds the matching socket record for the given pid and socket
-	std::vector<record *>::iterator findInRecords(int pid, int sock);
+	recvecit findInRecords(int pid, int sock);
 	// helper function that compares the record and the addresses and ports to see if they match
-	bool recordMatchesAddrs(std::vector<record *>::iterator index, unsigned int anyaddr,
+	bool recordMatchesAddrs(recvecit index, unsigned int anyaddr,
 			unsigned int srcaddr, unsigned short srcport,
 			unsigned int dstaddr, unsigned short dstport);
 	// helper function that finds the matching bound socket, pending connection, established connection,
 	// or accepted connection record for the given source and destination addresses and ports
-	std::vector<record *>::iterator findInRecords(unsigned int srcaddr, unsigned short srcport,
+	recvecit findInRecords(unsigned int srcaddr, unsigned short srcport,
 			unsigned int dstaddr, unsigned short dstport);
 	// helper function that finds the matching socket record for the given address and port
-	std::vector<record *>::iterator findInRecords(unsigned int srcaddr, unsigned short srcport);
+	recvecit findInRecords(unsigned int srcaddr, unsigned short srcport);
 	// helper function that calculates the checksum of the given packet
 	unsigned short calculateChecksum(Packet *packet);
 	// helper function that makes a packet
 	Packet *makePacket(size_t datasize, record const *rec, unsigned int ack,
 			unsigned char dataoffset, unsigned char flags, unsigned short windowsize, void *data);
 	// helper function that erases the given socket record properly depending on which vector it is in
-	void eraseFromRecords(std::vector<record *>::iterator index, std::vector<record *>::iterator parentindex);
+	void eraseFromRecords(recvecit index, recvecit parentindex);
 	// debug function that prints out the content of a struct record
 	void printRecord(record const *rec);
 
